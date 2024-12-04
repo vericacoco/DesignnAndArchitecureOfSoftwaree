@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Historical Prices</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #4a90e2, #1c3b70); /* Blue gradient */
+            color: #f1faee;
+            font-family: 'Arial', sans-serif;
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .table-container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .table thead th {
+            background-color: #1c3b70; /* Dark blue headers */
+            color: #f1faee;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+            text-align: center;
+        }
+
+        .table tbody tr {
+            transition: background-color 0.3s ease;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f8f9fa;
+        }
+
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: #edf2f7;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #4a90e2;
+            color: #ffffff;
+        }
+
+        td, th {
+            padding: 1rem;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid #dee2e6;
+        }
+
+        .badge {
+            padding: 0.4em 0.6em;
+            font-size: 0.9rem;
+            border-radius: 5px;
+        }
+
+        /* Percentage Change: Dynamic coloring */
+        .percentage-up {
+            color: #28a745; /* Green for positive */
+        }
+        .percentage-down {
+            color: #dc3545; /* Red for negative */
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            .table {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div th:insert="/layout/layout :: navbar"></div>
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Company Historical Prices</h1>
+    <div class="table-container">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Last Transaction Price</th>
+                    <th>Max Price</th>
+                    <th>Min Price</th>
+                    <th>Average Price</th>
+                    <th>Percentage Change</th>
+                    <th>Quantity</th>
+                    <th>Turnover Best</th>
+                    <th>Total Turnover</th>
+                    <th>Company</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="history : ${prices}">
+                    <td th:text="${history.id}"></td>
+                    <td th:text="${history.date}"></td>
+                    <td th:text="${history.lastTransactionPrice}"></td>
+                    <td th:text="${history.maxPrice}"></td>
+                    <td th:text="${history.minPrice}"></td>
+                    <td th:text="${history.averagePrice}"></td>
+                    <td>
+                        <span th:classappend="${history.percentageChange > 0} ? 'percentage-up' : 'percentage-down'"
+                              th:text="${history.percentageChange} + '%'"></span>
+                    </td>
+                    <td th:text="${history.quantity}"></td>
+                    <td th:text="${history.turnoverBest}"></td>
+                    <td th:text="${history.totalTurnover}"></td>
+                    <td th:text="${history.company.companyCode}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
